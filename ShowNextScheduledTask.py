@@ -36,17 +36,6 @@ def get_today_tasks():
             today_tasks.append((task_name, next_run_time, "Scheduled"))
 
     return today_tasks
-"""
-if __name__ == '__main__':
-    tasks = get_today_tasks()
-    print(tasks)
-    for task_name, last_run, next_run, state in tasks:
-        print(f"Task: {task_name}")
-        print(f"  Last Run Time: {last_run}")
-        print(f"  Next Run Time: {next_run}")
-        print(f"  State: {state}")
-        print("")"""
-
 
 class TextPrinterApp:
     def __init__(self, root):
