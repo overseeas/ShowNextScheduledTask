@@ -51,26 +51,27 @@ class TextPrinterApp:
 
     def update_text(self):
         tasks = get_today_tasks()
+        if tasks:
+            now = datetime.datetime.now()
+            
+            #find earlier schedule
+            schedules = []
+            for task in tasks:
+                schedules.append(task[1])
+            earliest_datetime = min((dt, idx) for idx, dt in enumerate(schedules))
+            left = (earliest_datetime[0] - now).seconds
+            left_hours = left // 3600
+            left_minutes = left % 3600 // 60
+            left_seconds = left % 3600 % 60
 
-        now = datetime.datetime.now()
-        
-        #find earlier schedule
-        schedules = []
-        for task in tasks:
-            schedules.append(task[1])
-        earliest_datetime = min((dt, idx) for idx, dt in enumerate(schedules))
-        left = (earliest_datetime[0] - now).seconds
-        left_hours = left // 3600
-        left_minutes = left % 3600 // 60
-        left_seconds = left % 3600 % 60
-
-        # Get the current time and update the label
-        announce = "シナリオ名「" + tasks[earliest_datetime[1]][0] + "」\n" + str(left_hours) + ":" + str(left_minutes) + ":" + str(left_seconds) + "後実行予定"
-        if left_hours == 0 and left_minutes < 5:
-            self.label.config(text="！！！！！\n" + announce + "\n！！！！！", fg="#FF0000")
+            # Get the current time and update the label
+            announce = "「" + tasks[earliest_datetime[1]][0] + "」\n" + str(left_hours) + ":" + str(left_minutes) + ":" + str(left_seconds) + "後実行予定"
+            if left_hours == 0 and left_minutes < 5:
+                self.label.config(text="！！！！！\n" + announce + "\n！！！！！", fg="#FF0000")
+            else:
+                self.label.config(text=announce, fg="#000000")
         else:
-            self.label.config(text=announce, fg="#000000")
-
+            self.label.config(text="実行予定のタスク無", fg="#000000")
         # Schedule the next update after 1000 milliseconds (1 second)
         self.root.after(1000, self.update_text)
 
