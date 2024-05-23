@@ -65,8 +65,11 @@ class TextPrinterApp:
         left_seconds = left % 3600 % 60
 
         # Get the current time and update the label
-        announce = tasks[earliest_datetime[1]][0] + "：残り " + str(left_hours) + "時" + str(left_minutes) + "分" + str(left_seconds) + "秒"
-        self.label.config(text=announce)
+        announce = "シナリオ名「" + tasks[earliest_datetime[1]][0] + "」\n" + str(left_hours) + ":" + str(left_minutes) + ":" + str(left_seconds) + "後実行予定"
+        if left_hours == 0 and left_minutes < 5:
+            self.label.config(text="！！！！！\n" + announce + "\n！！！！！", fg="#FF0000")
+        else:
+            self.label.config(text=announce, fg="#000000")
 
         # Schedule the next update after 1000 milliseconds (1 second)
         self.root.after(1000, self.update_text)
