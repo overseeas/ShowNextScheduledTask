@@ -18,7 +18,11 @@ def get_today_tasks():
     scheduler.Connect()
     
     # Get the root folder
-    root_folder = scheduler.GetFolder('\\RPA')
+    try:
+        root_folder = scheduler.GetFolder('\\RPA')
+    except:
+        return []
+
 
     # Get the current date
     today = datetime.datetime.now().date()
